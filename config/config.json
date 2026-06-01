@@ -1,0 +1,14 @@
+{
+    "static": {
+        "pack_title": "YOUR_STICKER_TITLE",
+        "pack_short_name": "your_short_name",
+        "default_emoji": ":sparkles:",
+        "sticker_dir": "static/output"
+    },
+    "video": {
+        "pack_title": "YOUR_VIDEO_TITLE",
+        "pack_short_name": "your_video_short_name",
+        "default_emoji": ":sparkles:",
+        "sticker_dir": "video/output"
+    }
+}

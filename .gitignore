@@ -1,0 +1,17 @@
+# --- 憑證與機密 ---
+config/.env
+config/sticker_session.session
+config/config.json
+
+
+# --- Python 編譯快取 ---
+__pycache__/
+*.pyc
+*.pyo
+
+# --- 使用者素材與輸出 ---
+workspace/
+
+# --- 系統檔案 ---
+.DS_Store
+Thumbs.db
