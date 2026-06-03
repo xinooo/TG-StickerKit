@@ -31,16 +31,23 @@ class LineDownloader:
         self.semaphore = asyncio.Semaphore(5)  # 限制併發數為 5
 
     def extract_product_id(self, url: str) -> Optional[str]:
-        # Support full URL or just ID
-        # 先移除可能存在的引號或空白
+        """從連結或字串中提取 LINE 貼圖產品 ID"""
+        # 預處理：移除引號與前後空白
         url = url.strip().strip('"').strip("'")
-        match = re.search(r'product/(\d+)', url)
-        if match:
-            return match.group(1)
         
-        # 嘗試直接從字串中找出純數字 ID
-        id_match = re.search(r'^(\d+)$', url)
-        return id_match.group(1) if id_match else None
+        # 定義多種可能的 URL 模式
+        patterns = [
+            r'product/(\d+)',        # 網頁版: store.line.me/stickershop/product/123/
+            r'/S/sticker/(\d+)',     # 行動版: line.me/S/sticker/123/
+            r'^(\d+)$'               # 純數字 ID
+        ]
+        
+        for pattern in patterns:
+            match = re.search(pattern, url)
+            if match:
+                return match.group(1)
+                
+        return None
 
     async def fetch_meta(self, session: aiohttp.ClientSession, product_id: str, retries: int = 3) -> Optional[Dict[str, Any]]:
         url = META_URL.format(product_id)
