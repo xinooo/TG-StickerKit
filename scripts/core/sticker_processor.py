@@ -76,10 +76,15 @@ def process_stickers_to_512(input_dir, output_dir, target_size=(512, 512)):
             print(f"處理 {filename} 時發生錯誤: {e}")
 
 if __name__ == "__main__":
-    # 使用 path_utils 定義的路徑
-    input_folder = os.path.join(WORKSPACE_DIR, "static", "input")
-    output_folder = os.path.join(WORKSPACE_DIR, "static", "output")
+    try:
+        # 使用 path_utils 定義的路徑
+        input_folder = os.path.join(WORKSPACE_DIR, "static", "input")
+        output_folder = os.path.join(WORKSPACE_DIR, "static", "output")
 
-    process_stickers_to_512(input_folder, output_folder)
-    print("\n所有圖片整合處理完畢！")
-    print(f"高品質結果儲存在: {output_folder}")
+        process_stickers_to_512(input_folder, output_folder)
+        print("\n所有圖片整合處理完畢！")
+        print(f"高品質結果儲存在: {output_folder}")
+    except Exception as e:
+        print(f"\n[-] 執行失敗: {e}")
+    finally:
+        input("\n請按 Enter 鍵結束...")

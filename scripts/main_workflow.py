@@ -136,3 +136,5 @@ if __name__ == "__main__":
         asyncio.run(main_workflow())
     except KeyboardInterrupt:
         print("\n[!] 使用者已中斷。")
+    finally:
+        input("\n請按 Enter 鍵結束...")

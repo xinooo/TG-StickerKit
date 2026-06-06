@@ -92,10 +92,15 @@ def process_video_stickers(input_dir, output_dir):
             print(f"❌ 最終失敗: {filename} 即使使用最低畫質仍無法符合 256 KB 限制。")
 
 if __name__ == "__main__":
-    # 使用 path_utils 定義的路徑
-    input_folder = os.path.join(WORKSPACE_DIR, "video", "input")
-    output_folder = os.path.join(WORKSPACE_DIR, "video", "output")
+    try:
+        # 使用 path_utils 定義的路徑
+        input_folder = os.path.join(WORKSPACE_DIR, "video", "input")
+        output_folder = os.path.join(WORKSPACE_DIR, "video", "output")
 
-    process_video_stickers(input_folder, output_folder)
-    print("\n所有影片貼圖轉換完畢！")
-    print(f"結果儲存在: {output_folder}")
+        process_video_stickers(input_folder, output_folder)
+        print("\n所有影片貼圖轉換完畢！")
+        print(f"結果儲存在: {output_folder}")
+    except Exception as e:
+        print(f"\n[-] 執行失敗: {e}")
+    finally:
+        input("\n請按 Enter 鍵結束...")

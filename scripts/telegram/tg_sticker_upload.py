@@ -121,4 +121,11 @@ async def main():
     await client.disconnect()
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("\n[!] 使用者已中斷。")
+    except Exception as e:
+        print(f"\n[-] 執行失敗: {e}")
+    finally:
+        input("\n請按 Enter 鍵結束...")

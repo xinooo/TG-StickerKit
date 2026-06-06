@@ -188,4 +188,9 @@ def main():
         print("[-] 請輸入有效的資訊。")
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(f"\n[-] 執行失敗: {e}")
+    finally:
+        input("\n請按 Enter 鍵結束...")
