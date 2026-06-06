@@ -14,6 +14,7 @@ from telethon.tl.types import InputStickerSetItem, InputMediaUploadedDocument, D
 from dotenv import load_dotenv
 from utils.path_utils import CONFIG_DIR, WORKSPACE_DIR, CONFIG_PATH, ENV_PATH
 from utils.config_utils import config
+from utils.tg_utils import check_sticker_pack_exists
 from telegram.tg_compat import handle_flood_wait
 
 # 取得 config.json 設定檔
@@ -58,6 +59,11 @@ async def main():
         return
         
     print("成功登入 Telegram！")
+
+    # 檢查貼圖包是否已存在
+    if await check_sticker_pack_exists(client, PACK_SHORT_NAME):
+        await client.disconnect()
+        sys.exit(1)
 
     # 取得檔案
     if not os.path.exists(STICKER_DIR):

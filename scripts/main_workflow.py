@@ -9,8 +9,11 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 if script_dir not in sys.path:
     sys.path.insert(0, script_dir)
 
-from utils.path_utils import WORKSPACE_DIR, CONFIG_PATH, clear_directory
+from utils.path_utils import WORKSPACE_DIR, CONFIG_PATH, CONFIG_DIR, clear_directory
 from utils.line_utils import extract_line_info, fetch_line_metadata, parse_line_resource
+from utils.config_utils import config
+from utils.tg_utils import check_sticker_pack_exists
+from telethon import TelegramClient
 from core.line_sticker_downloader import LineDownloader
 from core.sticker_processor import process_stickers_to_512
 from core.video_sticker_processor import process_video_stickers
@@ -95,6 +98,26 @@ async def main_workflow():
         except Exception as e:
             print(f"[-] 清理工作區失敗: {e}")
             return
+
+        # 1.5 檢查 Telegram 是否已有相同貼圖包
+        print(f"[*] 正在檢查 Telegram 是否已有相同貼圖包...")
+        short_name = f"xinooo_stickerkit_line{product_id}"
+        
+        # 設置環境變數以標示為自動化流程（影響提示訊息）
+        os.environ['SKIP_FINAL_INPUT'] = '1'
+        
+        SESSION_PATH = os.path.join(CONFIG_DIR, 'sticker_session')
+        client = TelegramClient(SESSION_PATH, int(config.api_id), config.api_hash)
+        try:
+            await client.start(phone=config.phone)
+            if await check_sticker_pack_exists(client, short_name):
+                print("[-] 貼圖包已存在於 Telegram，中止自動化流程以節省資源。")
+                return
+        except Exception as e:
+            print(f"[-] Telegram 預檢連線失敗 (可能未登入): {e}")
+            print("[*] 將繼續執行流程，由後續上傳腳本處理連線與檢查。")
+        finally:
+            await client.disconnect()
 
         # 2. 執行下載
         await downloader.run(user_input)
