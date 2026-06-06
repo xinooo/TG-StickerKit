@@ -132,4 +132,5 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"\n[-] 執行失敗: {e}")
     finally:
-        input("\n請按 Enter 鍵結束...")
+        if os.environ.get('SKIP_FINAL_INPUT') != '1':
+            input("\n請按 Enter 鍵結束...")

@@ -1,6 +1,6 @@
 # TG-StickerKit - Telegram 貼圖自動化工具組
 
-這套工具旨在幫助你快速、高品質地將普通圖片、影片以及 **LINE 貼圖** 轉換為 Telegram 貼圖，並透過 API 實現自動化批次上傳。
+這套工具旨在幫助你快速、高品質地將普通圖片、影片以及 **LINE 貼圖 & Emoji** 轉換為 Telegram 貼圖，並透過 API 實現自動化批次上傳。
 
 ---
 
@@ -9,7 +9,7 @@
 - **`scripts/`**: 存放所有核心 Python 程式碼。
   - `main_workflow.py`: **一鍵全自動化工作流 (推薦使用)**。
   - **`core/`**: 核心處理邏輯
-    - `line_sticker_downloader.py`: LINE 貼圖自動下載器 (具備併發控制與網路重試)。
+    - `line_sticker_downloader.py`: LINE 貼圖/Emoji 自動下載器 (具備併發控制與網路重試)。
     - `sticker_processor.py`: 靜態圖片處理與縮放。
     - `video_sticker_processor.py`: 影片貼圖處理 (FFmpeg 轉 WebM，最佳化畫質)。
   - **`telegram/`**: Telegram API 互動
@@ -19,6 +19,7 @@
   - **`utils/`**: 共用工具
     - `config_utils.py`: 環境變數與組態安全驗證。
     - `path_utils.py`: 統一路徑管理與安全目錄清理。
+    - `line_utils.py`: LINE API URL 模板、產品 ID 解析與資源解析（支援貼圖 + Emoji）。
 - **`workspace/`**: 存放貼圖素材的工作區。
   - `static/`: 靜態貼圖的 `input/` 與 `output/`。
   - `video/`: 影片貼圖的 `input/` 與 `output/`。
@@ -32,18 +33,20 @@
 ## 🛠️ 環境準備
 
 1. **安裝 Python**: 確保電腦已安裝 Python 3.8+。
+
 2. **安裝必要套件**:
    
    ```powershell
    pip install Pillow telethon python-dotenv aiohttp
    ```
+
 3. **安裝 FFmpeg**: 影片貼圖處理需要系統中已安裝 `ffmpeg`。
 
 ---
 
 ## 🚀 使用步驟
 
-### 【推薦】一鍵全自動化流程 (LINE 貼圖專用)
+### 【推薦】一鍵全自動化流程 (LINE 貼圖 / Emoji 專用)
 
 這是最簡單的方式，腳本會自動處理下載、分類、轉檔、更新配置與上傳。
 
@@ -52,11 +55,15 @@
    ```powershell
    python scripts/main_workflow.py
    ```
-2. **輸入資訊**: 依提示輸入 LINE 貼圖 ID 或完整網址。
+
+2. **輸入資訊**: 依提示輸入 LINE 貼圖/Emoji 的 ID 或完整網址。
+
 3. **自動化執行**: 
+   
    - 腳本會自動判斷貼圖類型。
    - 自動從 LINE 獲取繁體中文標題作為貼圖包名稱。
    - 自動完成轉檔與上傳。
+
 4. **完成**: 直接獲得 Telegram 貼圖包連結。
 
 ---
